@@ -1,0 +1,6 @@
+<ngx-dropzone (change)="fileService.onSelect($event)">
+  <ngx-dropzone-label>Sleep hier uw bestanden</ngx-dropzone-label>
+  <ngx-dropzone-preview *ngFor="let file of fileService.files" [removable]="true" (removed)="fileService.onRemove(file)">
+    <ngx-dropzone-label>{{ file.name }} ({{ file.type }})</ngx-dropzone-label>
+  </ngx-dropzone-preview>
+</ngx-dropzone>
