@@ -1,0 +1,7 @@
+<ng-container *ngIf="zaak; else noZaak">
+  <p>{{zaak.id}}</p>
+  <p>{{zaak.name}}</p>
+</ng-container>
+<ng-template #noZaak>
+  <p>Geef een zaak identificatienummer.</p>
+</ng-template>

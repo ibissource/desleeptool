@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ZaakService } from "../zaak.service";
 
 @Component({
   selector: 'app-zaak-input',
@@ -6,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./zaak-input.component.css']
 })
 export class ZaakInputComponent implements OnInit {
+  zaakId!: number;
 
-  constructor() { }
+  constructor(private zaakService: ZaakService) { }
 
   ngOnInit(): void {
   }
 
+  onSubmit() {
+    this.zaakService.getZaak(this.zaakId)
+  }
 }
