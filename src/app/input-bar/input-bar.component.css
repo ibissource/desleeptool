@@ -1,0 +1,22 @@
+.bar {
+  background: #f3f3f3;
+  height: 64px;
+
+  padding: 12px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.label {
+
+}
+
+.input {
+  flex-grow: 1;
+  height: 32px;
+  border: 1px solid #ddd;
+}

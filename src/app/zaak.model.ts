@@ -1,5 +1,7 @@
 export class Zaak {
-  id!: number;
-  name!: string;
+  id!: string;
+  type!: string;
+  afzender!: string;
+  omschrijving!: string;
   file?: any;
 }

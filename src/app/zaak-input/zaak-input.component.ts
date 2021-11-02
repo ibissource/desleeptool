@@ -7,14 +7,14 @@ import { ZaakService } from "../zaak.service";
   styleUrls: ['./zaak-input.component.css']
 })
 export class ZaakInputComponent implements OnInit {
-  zaakId!: number;
+  zaakId = "";
 
   constructor(private zaakService: ZaakService) { }
 
   ngOnInit(): void {
   }
 
-  onSubmit() {
+  onSubmit = (): void => {
     this.zaakService.getZaak(this.zaakId)
   }
 }

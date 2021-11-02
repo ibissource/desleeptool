@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Zaak } from "./zaak.model";
-import { Observer, Subject } from "rxjs";
+import { Subject } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +15,13 @@ export class ZaakService {
   // TODO: Get last 20 zaken.
 
   // TODO: Get zaak by id.
-  public getZaak(id: number): void {
-    this.zaakSubject.next({id: id, name: 'testZaak'});
+  public getZaak(id: string): void {
+    this.zaakSubject.next({
+      id: id,
+      type: 'testZaak B1202',
+      afzender: 'Philipsen, S',
+      omschrijving: 'Aanvraag rijbewijs'
+    });
   }
 
   // TODO: Update zaak with file

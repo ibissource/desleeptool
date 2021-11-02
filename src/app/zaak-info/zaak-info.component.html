@@ -1,7 +1,21 @@
-<ng-container *ngIf="zaak; else noZaak">
-  <p>{{zaak.id}}</p>
-  <p>{{zaak.name}}</p>
-</ng-container>
-<ng-template #noZaak>
-  <p>Geef een zaak identificatienummer.</p>
-</ng-template>
+<div class="container">
+  <ng-container *ngIf="zaak; else noZaak">
+    <div class="container__info">
+      <div class="container__info__cell">
+        <span class="container__info__cell__label">Zaakidentificatie:</span> <span>{{zaak.id}}</span>
+      </div>
+      <div class="container__info__cell">
+        <span class="container__info__cell__label">Zaaktype omschrijving:</span> <span>{{zaak.type}}</span>
+      </div>
+      <div class="container__info__cell">
+        <span class="container__info__cell__label">Afzender:</span> <span>{{zaak.afzender}}</span>
+      </div>
+      <div class="container__info__cell container__info__cell--large">
+        <span class="container__info__cell__label">Omschrijving:</span> <span>{{zaak.omschrijving}}</span>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #noZaak>
+    <span>Geef een zaak identificatienummer.</span>
+  </ng-template>
+</div>

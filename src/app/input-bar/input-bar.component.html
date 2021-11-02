@@ -1,0 +1,9 @@
+<div class="bar">
+  <label class="label" *ngIf="label" for="inputBarRef">{{label}}:</label>
+  <input class="input" type="text" id="inputBarRef"
+         (keyup.enter)="onSubmit()"
+         [placeholder]="placeholder ?? ''"
+         [ngModel]="value"
+         (ngModelChange)="onChange($event)"/>
+  <app-button *ngIf="buttonText" (click)="onSubmit()">{{buttonText}}</app-button>
+</div>

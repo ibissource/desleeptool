@@ -1,0 +1,23 @@
+.container {
+  background: #f3f3f3;
+  padding: 12px;
+}
+
+.container__info {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.container__info__cell {
+  display: flex;
+  gap: 12px;
+}
+
+.container__info__cell--large {
+  grid-column: span 3;
+}
+
+.container__info__cell__label {
+  font-weight: bold;
+}

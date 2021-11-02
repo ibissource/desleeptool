@@ -7,13 +7,19 @@ import { FileComponent } from './file/file.component';
 import { NgxDropzoneModule } from "ngx-dropzone";
 import { ZaakInfoComponent } from './zaak-info/zaak-info.component';
 import { FormsModule } from "@angular/forms";
+import { HeaderComponent } from './header/header.component';
+import { InputBarComponent } from './input-bar/input-bar.component';
+import { ButtonComponent } from './button/button.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ZaakInputComponent,
     FileComponent,
-    ZaakInfoComponent
+    ZaakInfoComponent,
+    HeaderComponent,
+    InputBarComponent,
+    ButtonComponent
   ],
   imports: [
     BrowserModule,
