@@ -3,5 +3,6 @@ export class Zaak {
   type!: string;
   afzender!: string;
   omschrijving!: string;
+  typeOmschrijving!: string;
   file?: any;
 }
