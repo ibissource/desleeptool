@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ZaakService } from "../zaak.service";
-import { Zaak } from "../zaak.model";
+import { ZaakService } from "../../../zaak.service";
+import { Zaak } from "../../../zaak.model";
 
 @Component({
   selector: 'app-zaak-info',

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FileService } from "./file/file.service";
 
 @Component({
   selector: 'app-root',
@@ -9,10 +8,6 @@ import { FileService } from "./file/file.service";
 export class AppComponent {
   title = 'SleepTool';
 
-  constructor(private fileService: FileService) {
-  }
-
-  onSubmit() {
-    this.fileService.getFileContents();
+  constructor() {
   }
 }

@@ -2,31 +2,38 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { ZaakInputComponent } from './zaak-input/zaak-input.component';
-import { FileComponent } from './file/file.component';
-import { NgxDropzoneModule } from "ngx-dropzone";
-import { ZaakInfoComponent } from './zaak-info/zaak-info.component';
-import { FormsModule } from "@angular/forms";
 import { HeaderComponent } from './header/header.component';
-import { InputBarComponent } from './input-bar/input-bar.component';
-import { ButtonComponent } from './button/button.component';
+import { FilePageComponent } from './pages/file-page/file-page.component';
+import { SearchPageComponent } from './pages/search-page/search-page.component';
+import { SharedModule } from "./shared/shared.module";
+import { FilePageModule } from "./pages/file-page/file-page.module";
+import { RouterModule } from "@angular/router";
+import { SettingsPageComponent } from "./pages/settings-page/settings-page.component";
+
+
+const routes = [
+  {path: 'file', component: FilePageComponent},
+  {path: 'search', component: SearchPageComponent},
+  {path: 'settings', component: SettingsPageComponent},
+  {path: '**', component: FilePageComponent},
+]
 
 @NgModule({
   declarations: [
     AppComponent,
-    ZaakInputComponent,
-    FileComponent,
-    ZaakInfoComponent,
     HeaderComponent,
-    InputBarComponent,
-    ButtonComponent
+    FilePageComponent,
+    SearchPageComponent
   ],
   imports: [
     BrowserModule,
-    NgxDropzoneModule,
-    FormsModule
+    SharedModule,
+    FilePageModule,
+    RouterModule.forRoot(routes),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+
 })
-export class AppModule { }
+export class AppModule {
+}

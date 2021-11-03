@@ -4,6 +4,7 @@
   </span>
 </div>
 <nav class="menu">
-  <a class="menu__item menu__item--active">Bestand bijsluiten</a>
-  <a class="menu__item">Zoek een zaak</a>
+  <a [routerLink]="['file']" routerLinkActive="menu__item--active" class="menu__item">Bestand bijsluiten</a>
+  <a [routerLink]="['search']" routerLinkActive="menu__item--active" class="menu__item">Zoek een zaak</a>
+  <a [routerLink]="['settings']" routerLinkActive="menu__item--active" class="menu__item">Instellingen</a>
 </nav>

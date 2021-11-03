@@ -14,7 +14,8 @@ export class InputBarComponent implements OnInit {
   @Input() value!: string;
   @Output() valueChange = new EventEmitter<string>();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

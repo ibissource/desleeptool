@@ -24,6 +24,7 @@
 
   color: #fff;
   line-height: 48px;
+  text-decoration: none;
 }
 
 .menu__item:not(:last-child) {
@@ -32,6 +33,12 @@
 
 .menu__item:hover {
   background: #124078;
+
+  color: #fff;
+}
+
+.menu__item:active {
+  background: #333;
 
   color: #fff;
 }

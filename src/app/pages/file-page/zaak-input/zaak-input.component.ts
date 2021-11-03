@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ZaakService } from "../zaak.service";
+import { ZaakService } from "../../../zaak.service";
 
 @Component({
   selector: 'app-zaak-input',
