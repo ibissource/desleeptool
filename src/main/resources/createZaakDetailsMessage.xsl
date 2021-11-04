@@ -9,6 +9,8 @@
 	<xsl:param name="afzenderLastname"/>
 	<xsl:param name="afzenderLetters"/>
 	<xsl:param name="documentNames"/>
+	<xsl:param name="zaakUrl"/>
+	<xsl:param name="informatieObjectTypen"/>
 
 	<xsl:template match="/">
 		<Zaak>
@@ -18,6 +20,8 @@
 			<zaakTypeOmschrijving><xsl:value-of select="$zaakTypeOmschrijving"/></zaakTypeOmschrijving>
 			<afzender><xsl:value-of select="$afzenderLetters"/>. <xsl:value-of select="$afzenderLastname"/></afzender>
 			<documents><xsl:value-of select="$documentNames"/></documents>
+			<zaakUrl><xsl:value-of select="$zaakUrl"/></zaakUrl>
+			<informatieObjectTypen><xsl:value-of select="$informatieObjectTypen"/></informatieObjectTypen>
 		</Zaak>
 	</xsl:template>
 

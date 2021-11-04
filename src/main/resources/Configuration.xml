@@ -63,6 +63,7 @@
 			<PutInSessionPipe name="PutZaakTypeValues">
 				<Param name="ZaakTypeIdentificatie" xpathExpression="/root/identificatie"/>
 				<Param name="ZaakTypeOmschrijving" xpathExpression="/root/omschrijving"/>
+				<Param name="informatieObjectTypen" xpathExpression="/root/informatieobjecttypen"/>
 			</PutInSessionPipe>
 
 			<SenderPipe name="getAfzender" getInputFromFixedValue="&lt;dummy/&gt;">
@@ -117,6 +118,8 @@
 				<Param name="afzenderLastname" sessionKey="AfzenderLastName"/>
 				<Param name="afzenderLetters" sessionKey="AfzenderLetters"/>
 				<Param name="documentNames" sessionKey="documents"/>
+				<Param name="zaakUrl" sessionKey="zaakUrl"/>
+				<Param name="informatieObjectTypen" sessionKey="informatieObjectTypen"/>
 			</XsltPipe>
 
 			<JsonPipe name="responseToJson" direction="XML2JSON"/>
