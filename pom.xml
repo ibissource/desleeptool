@@ -1,206 +1,56 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	>
 	<modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.ibissource</groupId>
-		<artifactId>ibis-adapterframework-parent</artifactId>
-		<version>7.7-SNAPSHOT</version>
-	</parent>
-
-	<artifactId>ibis-adapterframework-example</artifactId>
-	<name>Ibis AdapterFramework example</name>
+	<groupId>org.ibissource</groupId>
+	<artifactId>Frank2Example4</artifactId>
+	<version>1.0</version>
 	<packaging>war</packaging>
-
-	<properties>
-		<m2eclipse.wtp.contextRoot>iaf-example</m2eclipse.wtp.contextRoot>
-		<failOnMissingWebXml>false</failOnMissingWebXml>
-	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.ibissource</groupId>
-			<artifactId>ibis-adapterframework-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.ibissource</groupId>
 			<artifactId>ibis-adapterframework-webapp</artifactId>
+			<version>[7.7-20210726.162851,)</version>
+			<!--
+			Keep this version and the frank-flow version as high as possible to prevent a lot of pom version's being
+			downloaded when you have an empty local repository. This will also make the CI/CD pipeline faster as it
+			starts with an empty local repository on every new run
+			-->
 			<type>war</type>
 		</dependency>
+		<!--
+		Adding core jar can prevent double jars when the versions of Frank!Flow's dependencies are different than the
+		same dependencies in Frank!Framework. When core jar is added Maven will only select the version as specified
+		by the core jar (the webapp doesn't have this effect as it is of type war and is only used as an overlay)
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>1.4.199</version>
+			<groupId>org.ibissource</groupId>
+			<artifactId>ibis-adapterframework-core</artifactId>
+			<version>[7.6,)</version>
 		</dependency>
-		<!-- Includes missing javax.jms.JMSExceptions class -->
+		-->
 		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-jms_1.1_spec</artifactId>
-			<scope>runtime</scope>
+			<groupId>org.ibissource</groupId>
+			<artifactId>frank-flow</artifactId>
+			<version>[2.0.2-SNAPSHOT,)</version>
+			<!--
+			When you have a local clone of Frank!Flow that has built a SNAPSHOT of the latest Frank!Flow version to
+			your local repo this local SNAPSHOT will be used instead of the latest version from Nexus. This is probably
+			what you are doing when you are a Frank!Flow (backend) developer. As a Frank!Flow (frontend) you probably
+			also want to set frank-flow.frontend.path in build.xml (see build.xml for more info)
+			 -->
 		</dependency>
 	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>9.2.29.v20191105</version>
-				<configuration>
-					<systemProperties>
-						<systemProperty>
-							<name>log.dir</name>
-							<value>./target</value>
-						</systemProperty>
-						<systemProperty>
-							<name>log.level</name>
-							<value>DEBUG</value>
-						</systemProperty>
-						<systemProperty>
-							<name>dtap.stage</name>
-							<value>LOC</value>
-						</systemProperty>
-					</systemProperties>
-					<webAppConfig>
-						<webInfIncludeJarPattern>.*/ibis-adapterframework-*\.jar$|.*/classes/.*</webInfIncludeJarPattern>
-						<allowDuplicateFragmentNames>true</allowDuplicateFragmentNames>
-					</webAppConfig>
-					<loginServices>
-						<loginServices implementation="org.eclipse.jetty.jaas.JAASLoginService">
-							<name>Ibis</name>
-						</loginServices>
-					</loginServices>
-				</configuration>
-			</plugin>
-			<!-- use maven-jar-plugin to make separate artifacts of context, configurations, resources and testscenarios, to inject them into deployments -->
-			<!--
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.0</version>
-				<executions>
-					<execution>
-						<id>zip-context</id>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<classifier>context</classifier>
-							<classesDirectory>src/main/webapp/META-INF</classesDirectory>
-							<includes>context.xml</includes>
-						</configuration>
-					</execution>
-					<execution>
-						<id>zip-configurations</id>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<classifier>configurations</classifier>
-							<classesDirectory>src/main</classesDirectory>
-							<includes>configurations/</includes>
-						</configuration>
-					</execution>
-					<execution>
-						<id>zip-resources</id>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<classifier>resources</classifier>
-							<classesDirectory>src/main/resources</classesDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>zip-scenarios</id>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<classifier>scenarios</classifier>
-							<classesDirectory>src/test/testtool</classesDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			-->
-		</plugins>
-	</build>
 
-  <profiles>
-    <!--
-    Copy dependencies from iaf-webapp/pom.xml to make m2e add dependent-module
-    elements to org.eclipse.wst.common.component. Maven doesn't need this copy
-    to add the jar files to the war file. Might be a bug in m2e:
-    https://bugs.eclipse.org/bugs/show_bug.cgi?id=398138
-    Note: Maven will copy the jar files from the war in the local repository
-    which might be an old snapshot.
-    
-    In older versions of Eclipse (Kepler - 20140224-0627) the larva and ladybug modules are not automatically added to the (correct) classpath.
-    Because of this the example module will throw a FileNotFoundException on springIbisTestTool.xml which prevents the IBIS from starting up.
-    In newer versions of Eclipse (at least version 20181214-0600 onwards) this seems to have been resolved.
-    -->
-    <profile>
-      <id>m2e</id>
-      <activation>
-        <property>
-          <name>m2e.version</name>
-        </property>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>org.ibissource</groupId>
-          <artifactId>ibis-adapterframework-larva</artifactId>
-          <scope>runtime</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.ibissource</groupId>
-          <artifactId>ibis-adapterframework-ladybug</artifactId>
-        </dependency>
-     </dependencies>
-    </profile>
-    <profile>
-      <id>proprietary</id>
-      <activation>
-        <property>
-          <name>proprietary</name>
-        </property>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>org.ibissource</groupId>
-          <artifactId>ibis-adapterframework-ifsa</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>org.ibissource</groupId>
-          <artifactId>ibis-adapterframework-tibco</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>org.ibissource</groupId>
-          <artifactId>ibis-adapterframework-sap</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>org.ibissource</groupId>
-          <artifactId>ibis-adapterframework-coolgen</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>org.ibissource</groupId>
-          <artifactId>ibis-adapterframework-ibm</artifactId>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>cmis</id>
-      <dependencies>
-        <dependency>
-          <groupId>org.ibissource</groupId>
-          <artifactId>ibis-adapterframework-cmis</artifactId>
-          <scope>runtime</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
+	<repositories>
+		<repository>
+			<id>ibissource</id>
+			<name>Ibissource</name>
+			<url>https://nexus.frankframework.org/content/repositories/public</url>
+		</repository>
+	</repositories>
 
 </project>

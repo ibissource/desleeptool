@@ -26,49 +26,70 @@ export class ZaakService {
   public postZaak(file: File) {
     const zaak = this.zaakSubject.getValue();
 
-    this.readFile(file).then((fileContent) => {
-      let currentDate = new Date();
-      const documentData = {
-        "bronorganisatie": this.bronorganisatie,
-        "creatiedatum": formatDate(currentDate, 'yyyy-MM-dd', 'en-US'),
-        "titel": file.name,
-        "vertrouwelijkheidaanduiding": "openbaar",
-        "auteur": zaak.afzender,
-        "status": "in_bewerking",
-        "formaat": file.type,
-        "taal": "nld",
-        "bestandsnaam": file.name,
-        "inhoud": fileContent,
-        "indicatieGebruiksrecht": false,
-        "informatieobjecttype": zaak.informatieObjectTypen
-      }
-      this.http.post(`${ZaakService.BASE_URL}documenten/api/v1/enkelvoudiginformatieobjecten`, documentData, {headers: this.getHeaders()}).subscribe((zaakResponse: any) => {
-        const relatieData = {
-          "informatieobject": zaakResponse.url,
-          "zaak": this.zaakUrl,
-          "titel": file.name
+    this.getBearerToken().then(() => {
+      this.readFile(file).then((fileContent) => {
+        let currentDate = new Date();
+        const documentData = {
+          "bronorganisatie": this.bronorganisatie,
+          "creatiedatum": formatDate(currentDate, 'yyyy-MM-dd', 'en-US'),
+          "titel": file.name,
+          "vertrouwelijkheidaanduiding": "openbaar",
+          "auteur": zaak.afzender,
+          "status": "in_bewerking",
+          "formaat": file.type,
+          "taal": "nld",
+          "bestandsnaam": file.name,
+          "inhoud": fileContent,
+          "indicatieGebruiksrecht": false,
+          "informatieobjecttype": zaak.informatieObjectTypen
         }
-        this.http.post(`${ZaakService.BASE_URL}zaken/api/v1/zaakinformatieobjecten`, relatieData, {headers: this.getHeaders()}).subscribe((relatieResponse: any) => {
-            
+
+        console.log('documentData: ', documentData);
+        console.log('jwt: ', this.bearerToken);
+        this.http.post(`${ZaakService.BASE_URL}documenten/api/v1/enkelvoudiginformatieobjecten`, documentData, {headers: this.getHeaders()}).subscribe((zaakResponse: any) => {
+          const relatieData = {
+            "informatieobject": zaakResponse.url,
+            "zaak": this.zaakUrl,
+            "titel": file.name
+          }
+          this.http.post(`${ZaakService.BASE_URL}zaken/api/v1/zaakinformatieobjecten`, relatieData, {headers: this.getHeaders()}).subscribe((relatieResponse: any) => {
+              
+          })
         })
       })
     })
+
+
   }
 
   public getZaak(id: string): void {
     this.http.get<any>(`http://localhost/api/test?identificatie=${id}`).subscribe(res => {
+      console.log('response: ', res);
       const zaak = {
         id: res.zaakId,
         type : res.zaakTypeId,
         afzender: res.afzender,
         typeOmschrijving: res.zaakTypeOmschrijving,
         omschrijving : res.zaakOmschrijving,
-        informatieObjectTypen: res.informatieObjectTypen
+        informatieObjectTypen: res.informatieObjectTypen.replace(/(?<=.nl):443/g, '')
       };
       this.zaakUrl = res.zaakUrl;
       this.zaakSubject.next(zaak);
     })
   }
+
+  // public async getZaak(id: string): Promise<void> {
+
+  //   const zaak = new Zaak();
+  //   zaak.id = id;
+
+  //   await this.getBearerToken();
+  //   const zaakTypeUrl = await this.getOmschrijving(zaak);
+  //   const zaakType = await this.getZaakType(zaakTypeUrl, zaak);
+  //   await this.getZaakAfzender(zaak);
+
+  //   this.zaakSubject.next(zaak);
+  // }
 
   public async readFile(file: File): Promise<string | ArrayBuffer> {
     return new Promise<string | ArrayBuffer>((resolve, reject) => {
