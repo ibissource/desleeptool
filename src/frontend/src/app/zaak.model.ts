@@ -5,5 +5,5 @@ export class Zaak {
   omschrijving!: string;
   typeOmschrijving!: string;
   informatieObjectTypen!: string;
-  file?: any;
+  documents!: string[];
 }

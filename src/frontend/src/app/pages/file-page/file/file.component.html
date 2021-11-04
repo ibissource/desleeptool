@@ -1,10 +1,10 @@
-<ngx-dropzone [disabled]="!zaak.id" (change)="fileService.onSelect($event)">
+<ngx-dropzone [expandable]="true" [disabled]="!zaak.id" (change)="fileService.onSelect($event)">
   <ngx-dropzone-label>
     Sleep hier uw bestanden<br />
     of<br />
     klik om door bestanden te zoeken
   </ngx-dropzone-label>
-  <ngx-dropzone-preview *ngFor="let file of fileService.files" [removable]="true" (removed)="fileService.onRemove(file)">
-    <ngx-dropzone-label>{{ file.name }} ({{ file.type }})</ngx-dropzone-label>
+  <ngx-dropzone-preview [removable]="false" *ngFor="let file of fileService.files" (removed)="fileService.onRemove(file)">
+    <ngx-dropzone-label>{{ file.name }} {{file.type}}</ngx-dropzone-label>
   </ngx-dropzone-preview>
 </ngx-dropzone>

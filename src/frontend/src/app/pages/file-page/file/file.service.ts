@@ -1,6 +1,7 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Injectable } from '@angular/core';
 import { NgxDropzoneChangeEvent } from "ngx-dropzone";
+import { Zaak } from 'src/app/zaak.model';
 import { ZaakService } from 'src/app/zaak.service';
 
 @Injectable({
@@ -10,24 +11,24 @@ export class FileService {
   
   files: File[] = [];
   
-  constructor(public zaakService: ZaakService) {}
+  constructor(private zaakService: ZaakService) {
+    this.zaakService.zaakObserver.subscribe((zaak: Zaak) => {
+      if (zaak.id !== '' && zaak.documents) {
+        zaak.documents.forEach((fileName: string) => this.files.push(new File([], fileName)));
+      }
+    })
+  }
 
   onSelect(event: NgxDropzoneChangeEvent) {
     this.files.push(...event.addedFiles);
-
-    console.log('add files: ', event.addedFiles);
-    event.addedFiles.forEach(addedFile => this.zaakService.postZaak(addedFile))
+    
+    event.addedFiles.forEach((addedFile) => this.zaakService.postZaak(addedFile))
   }
 
   onRemove(file: File) {
     this.files.splice(this.files.indexOf(file), 1);
   }
 
-  // getFileContents() {
-  //   this.files.forEach((file) => this.readFile(file).then((content) => {
-  //     console.log(content)
-  //   }))
-  // }
 
 
 }

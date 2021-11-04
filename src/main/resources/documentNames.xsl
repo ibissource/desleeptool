@@ -2,7 +2,7 @@
 	<xsl:output method="xml" indent="no" omit-xml-declaration="yes"/>
 	<xsl:template match="/">
 		<xsl:variable name="documentNames">
-			<xsl:value-of select="array/titel" separator=";"/>
+			<xsl:value-of select="root/array/titel" separator=";"/>
 		</xsl:variable>
 		<xsl:value-of select="$documentNames"/>
 	</xsl:template>
