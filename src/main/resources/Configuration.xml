@@ -1,0 +1,163 @@
+<Configuration name="Example2">
+	<Adapter name="getZaakInfo">
+		<Receiver name="Example2Receiver">
+			<ApiListener 
+				name="listener"
+				uriPattern="test"
+				method="GET"
+				produces="JSON"
+			>
+			</ApiListener>
+		</Receiver>
+		<Pipeline>
+			<SenderPipe name="sendMessage" storeResultInSessionKey="token">
+				<HttpSender 
+					name="httpSender" 
+					methodType="GET"
+					url="http://openzaakbrug.test.sudwestfryslan.opengem.nl/jwt"
+				>
+				</HttpSender>
+			</SenderPipe>
+
+			<SenderPipe name="getZaak" getInputFromFixedValue="&lt;dummy/&gt;" storeResultInSessionKey="zaakData">
+				<HttpSender 
+					name="httpSender" 
+					methodType="GET"
+					headersParams="Authorization,Accept-Crs"
+					url="https://open-zaak.test.sudwestfryslan.opengem.nl/zaken/api/v1/zaken?identificatie=${identificatie}"
+				>
+					<Param name="identificatie" sessionKey="identificatie"/>
+					<Param name="Accept-Crs" value="EPSG:4326"/>
+					<Param name="Authorization" xpathExpression="concat('Bearer ', $token)" >
+						<Param name="token" sessionKey="token" />
+					</Param>
+				</HttpSender>
+			</SenderPipe>
+
+			<JsonPipe name="json_zaak"/>
+
+			<PutInSessionPipe name="storeValues">
+				<Param name="zaakTypeUrl" xpathExpression="/root/results/zaaktype"/>
+				<Param name="zaakUrl" xpathExpression="/root/results/url"/>
+				<Param name="omschrijving" xpathExpression="/root/results/omschrijving"/>
+				<!-- <Param name="zaakUrl" xpathExpression=""/> -->
+			</PutInSessionPipe>
+
+			<SenderPipe name="getZaakType" getInputFromFixedValue="&lt;dummy/&gt;">
+				<HttpSender 
+					name="httpSender" 
+					methodType="GET"
+					headersParams="Authorization,Accept-Crs"
+					urlParam="zaakTypeUrl"
+				>
+					<Param name="zaakTypeUrl" sessionKey="zaakTypeUrl"/>
+					<Param name="Accept-Crs" value="EPSG:4326"/>
+					<Param name="Authorization" xpathExpression="concat('Bearer ', $token)" >
+						<Param name="token" sessionKey="token" />
+					</Param>
+				</HttpSender>
+			</SenderPipe>
+
+			<JsonPipe name="json_zaaktype"/>
+
+			<PutInSessionPipe name="PutZaakTypeValues">
+				<Param name="ZaakTypeIdentificatie" xpathExpression="/root/identificatie"/>
+				<Param name="ZaakTypeOmschrijving" xpathExpression="/root/omschrijving"/>
+			</PutInSessionPipe>
+
+			<SenderPipe name="getAfzender" getInputFromFixedValue="&lt;dummy/&gt;">
+				<HttpSender 
+					name="httpSender" 
+					methodType="GET"
+					headersParams="Authorization,Accept-Crs"
+				>
+					<Param name="url"  xpathExpression="concat('https://open-zaak.test.sudwestfryslan.opengem.nl/zaken/api/v1/rollen?zaak=', $zaakUrl)">
+						<Param name="zaakUrl" sessionKey="zaakUrl"/>
+					</Param>
+					<Param name="Accept-Crs" value="EPSG:4326"/>
+					<Param name="Authorization" xpathExpression="concat('Bearer ', $token)" >
+						<Param name="token" sessionKey="token" />
+					</Param>
+				</HttpSender>
+			</SenderPipe>
+
+			<JsonPipe name="json_roltypen"/>
+
+			<PutInSessionPipe name="PutAfzenderValuesInSession">
+				<Param name="AfzenderLastName" xpathExpression="/root/results[omschrijving='Initiator']/betrokkeneIdentificatie/geslachtsnaam"/>
+				<Param name="AfzenderLetters" xpathExpression="/root/results[omschrijving='Initiator']/betrokkeneIdentificatie/voorletters"/>
+			</PutInSessionPipe>
+
+			<SenderPipe name="getDocuments" getInputFromFixedValue="&lt;dummy/&gt;">
+				<HttpSender 
+					name="httpSender" 
+					methodType="GET"
+					headersParams="Authorization,Accept-Crs"
+				>
+					<Param name="url"  xpathExpression="concat('https://open-zaak.test.sudwestfryslan.opengem.nl/zaken/api/v1/zaakinformatieobjecten?zaak=', $zaakUrl)">
+						<Param name="zaakUrl" sessionKey="zaakUrl"/>
+					</Param>
+					<Param name="Accept-Crs" value="EPSG:4326"/>
+					<Param name="Authorization" xpathExpression="concat('Bearer ', $token)" >
+						<Param name="token" sessionKey="token" />
+					</Param>
+				</HttpSender>
+			</SenderPipe>
+
+			<JsonPipe name="json_zaak_documents" addXmlRootElement="true"/>
+
+			<XsltPipe name="document names" styleSheetName="documentNames.xsl" storeResultInSessionKey="documents">
+			</XsltPipe>
+
+			<XsltPipe name="createResponse" styleSheetName="createZaakDetailsMessage.xsl" getInputFromFixedValue="&lt;dummy/&gt;">
+				<Param name="zaakId" sessionKey="identificatie"/>
+				<Param name="zaakTypeId" sessionKey="ZaakTypeIdentificatie"/>
+				<Param name="zaakTypeOmschrijving" sessionKey="ZaakTypeOmschrijving"/>
+				<Param name="zaakOmschrijving" sessionKey="omschrijving"/>
+				<Param name="afzenderLastname" sessionKey="AfzenderLastName"/>
+				<Param name="afzenderLetters" sessionKey="AfzenderLetters"/>
+				<Param name="documentNames" sessionKey="documents"/>
+			</XsltPipe>
+
+			<JsonPipe name="responseToJson" direction="XML2JSON"/>
+
+			<Exit path="EXIT" state="success"/>
+		</Pipeline>
+	</Adapter>
+
+	<Adapter name="getZaakList">
+		<Receiver name="getZaakList">
+			<ApiListener name="getZaakList"
+				uriPattern="getZaakList"
+				method="GET"
+				produces="JSON"
+			>
+			</ApiListener>
+		</Receiver>
+		<Pipeline>
+			<SenderPipe name="sendMessage" storeResultInSessionKey="token">
+				<HttpSender 
+					name="httpSender" 
+					methodType="GET"
+					url="http://openzaakbrug.test.sudwestfryslan.opengem.nl/jwt"
+				>
+				</HttpSender>
+			</SenderPipe>
+
+			<SenderPipe name="getList" getInputFromFixedValue="&lt;dummy/&gt;">
+				<HttpSender 
+					name="httpSender" 
+					methodType="GET"
+					headersParams="Authorization,Accept-Crs"
+					url="https://open-zaak.test.sudwestfryslan.opengem.nl/zaken/api/v1/zaken"
+				>
+					<Param name="Accept-Crs" value="EPSG:4326"/>
+					<Param name="Authorization" xpathExpression="concat('Bearer ', $token)" >
+						<Param name="token" sessionKey="token" />
+					</Param>
+				</HttpSender>
+			</SenderPipe>
+			<Exit path="EXIT" state="success"/>
+		</Pipeline>
+	</Adapter>
+</Configuration>

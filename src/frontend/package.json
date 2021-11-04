@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
+    "build": "ng build --output-path ../main/webapp/desleeptool --deploy-url iaf-example/desleeptool/",
+    "watch": "ng build --output-path ../main/webapp/desleeptool --deploy-url iaf-example/desleeptool/ --watch",
     "test": "ng test"
   },
   "private": true,
