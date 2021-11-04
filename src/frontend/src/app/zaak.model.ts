@@ -4,5 +4,6 @@ export class Zaak {
   afzender!: string;
   omschrijving!: string;
   typeOmschrijving!: string;
+  informatieObjectTypen!: string;
   file?: any;
 }

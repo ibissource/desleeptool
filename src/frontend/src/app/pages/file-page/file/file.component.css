@@ -1,4 +1,14 @@
 ngx-dropzone {
   border: 1px dashed #ddd;
   border-radius: 0;
+  color: #333;
+}
+
+ngx-dropzone-preview {
+  border-radius: 0!important;
+  background: #f3f3f3
+}
+
+ngx-dropzone-preview:hover {
+  background: #ddd;
 }

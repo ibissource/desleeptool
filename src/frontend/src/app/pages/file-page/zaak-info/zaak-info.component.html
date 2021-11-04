@@ -1,5 +1,5 @@
 <div class="container">
-  <ng-container *ngIf="zaak; else noZaak">
+  <ng-container *ngIf="zaak.id; else noZaak">
     <div class="container__info">
       <div class="container__info__cell">
         <span class="container__info__cell__label">Zaakidentificatie:</span> <span>{{zaak.id}}</span>
