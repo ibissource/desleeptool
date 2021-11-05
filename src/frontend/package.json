@@ -18,6 +18,8 @@
     "@angular/platform-browser": "~12.2.0",
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
+    "@types/jsrsasign": "^8.0.13",
+    "jsrsasign": "^10.4.1",
     "ngx-dropzone": "^3.0.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",

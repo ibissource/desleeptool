@@ -3,6 +3,7 @@ import { Zaak } from "./zaak.model";
 import { BehaviorSubject } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { formatDate } from '@angular/common';
+import * as jsr from 'jsrsasign';
 
 @Injectable({
   providedIn: 'root',
@@ -43,14 +44,14 @@ export class ZaakService {
           "informatieobjecttype": zaak.informatieObjectTypen
         }
 
-        this.http.post(`${ZaakService.BASE_URL}documenten/api/v1/enkelvoudiginformatieobjecten`, documentData, {headers: this.getHeaders()}).subscribe((zaakResponse: any) => {
+        this.http.post(`${ZaakService.BASE_URL}documenten/api/v1/enkelvoudiginformatieobjecten`, documentData, { headers: this.getHeaders() }).subscribe((zaakResponse: any) => {
           const relatieData = {
             "informatieobject": zaakResponse.url,
             "zaak": this.zaakUrl,
             "titel": file.name
           }
-          this.http.post(`${ZaakService.BASE_URL}zaken/api/v1/zaakinformatieobjecten`, relatieData, {headers: this.getHeaders()}).subscribe((relatieResponse: any) => {
-              
+          this.http.post(`${ZaakService.BASE_URL}zaken/api/v1/zaakinformatieobjecten`, relatieData, { headers: this.getHeaders() }).subscribe((relatieResponse: any) => {
+
           })
         })
       })
@@ -60,13 +61,19 @@ export class ZaakService {
   }
 
   public getZaak(id: string): void {
+    // var oHeader = { alg: "HS256" };
+    // var sHeader = JSON.stringify(oHeader);
+    // var sPayload = "aaa";
+
+    // var sjws = jsr.KJUR.jws.JWS.sign("HS256", sHeader, sPayload, "616161");
+
     this.http.get<any>(`http://localhost/api/test?identificatie=${id}`).subscribe(res => {
       const zaak = {
         id: res.zaakId,
-        type : res.zaakTypeId,
+        type: res.zaakTypeId,
         afzender: res.afzender,
         typeOmschrijving: res.zaakTypeOmschrijving,
-        omschrijving : res.zaakOmschrijving,
+        omschrijving: res.zaakOmschrijving,
         informatieObjectTypen: res.informatieObjectTypen.replace(/(?<=.nl):443/g, ''),
         documents: res.documents.split(';')
       };
