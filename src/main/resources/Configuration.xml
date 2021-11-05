@@ -36,12 +36,12 @@
 
 			<JsonPipe name="json_zaak"/>
 
-			<PutInSessionPipe name="storeValues">
+			<pipe name="storeValues" className="nl.nn.adapterframework.pipes.PutParametersInSession">
 				<Param name="zaakTypeUrl" xpathExpression="/root/results/zaaktype"/>
 				<Param name="zaakUrl" xpathExpression="/root/results/url"/>
 				<Param name="omschrijving" xpathExpression="/root/results/omschrijving"/>
 				<!-- <Param name="zaakUrl" xpathExpression=""/> -->
-			</PutInSessionPipe>
+			</pipe>
 
 			<SenderPipe name="getZaakType" getInputFromFixedValue="&lt;dummy/&gt;">
 				<HttpSender 
@@ -60,11 +60,11 @@
 
 			<JsonPipe name="json_zaaktype"/>
 
-			<PutInSessionPipe name="PutZaakTypeValues">
+			<pipe name="PutZaakTypeValues" className="nl.nn.adapterframework.pipes.PutParametersInSession">
 				<Param name="ZaakTypeIdentificatie" xpathExpression="/root/identificatie"/>
 				<Param name="ZaakTypeOmschrijving" xpathExpression="/root/omschrijving"/>
 				<Param name="informatieObjectTypen" xpathExpression="/root/informatieobjecttypen"/>
-			</PutInSessionPipe>
+			</pipe>
 
 			<SenderPipe name="getAfzender" getInputFromFixedValue="&lt;dummy/&gt;">
 				<HttpSender 
@@ -84,10 +84,10 @@
 
 			<JsonPipe name="json_roltypen"/>
 
-			<PutInSessionPipe name="PutAfzenderValuesInSession">
+			<pipe name="PutAfzenderValuesInSession" className="nl.nn.adapterframework.pipes.PutParametersInSession">
 				<Param name="AfzenderLastName" xpathExpression="/root/results[omschrijving='Initiator']/betrokkeneIdentificatie/geslachtsnaam"/>
 				<Param name="AfzenderLetters" xpathExpression="/root/results[omschrijving='Initiator']/betrokkeneIdentificatie/voorletters"/>
-			</PutInSessionPipe>
+			</pipe>
 
 			<SenderPipe name="getDocuments" getInputFromFixedValue="&lt;dummy/&gt;">
 				<HttpSender 
