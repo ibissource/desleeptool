@@ -1,4 +1,4 @@
-<Configuration name="Example2">
+<Configuration name="Ibis4Example">
 	<Adapter name="getZaakInfo">
 		<Receiver name="Example2Receiver">
 			<ApiListener 
@@ -14,7 +14,7 @@
 				<HttpSender 
 					name="httpSender" 
 					methodType="GET"
-					url="http://openzaakbrug.test.sudwestfryslan.opengem.nl/jwt"
+					url="${jwt.endpoint}"
 				>
 				</HttpSender>
 			</SenderPipe>
@@ -24,7 +24,7 @@
 					name="httpSender" 
 					methodType="GET"
 					headersParams="Authorization,Accept-Crs"
-					url="https://open-zaak.test.sudwestfryslan.opengem.nl/zaken/api/v1/zaken?identificatie=${identificatie}"
+					url="${openzaak.baseurl}zaken/api/v1/zaken?identificatie=${identificatie}"
 				>
 					<Param name="identificatie" sessionKey="identificatie"/>
 					<Param name="Accept-Crs" value="EPSG:4326"/>
@@ -72,7 +72,7 @@
 					methodType="GET"
 					headersParams="Authorization,Accept-Crs"
 				>
-					<Param name="url"  xpathExpression="concat('https://open-zaak.test.sudwestfryslan.opengem.nl/zaken/api/v1/rollen?zaak=', $zaakUrl)">
+					<Param name="url"  xpathExpression="concat('${openzaak.baseurl}zaken/api/v1/rollen?zaak=', $zaakUrl)">
 						<Param name="zaakUrl" sessionKey="zaakUrl"/>
 					</Param>
 					<Param name="Accept-Crs" value="EPSG:4326"/>
@@ -95,7 +95,7 @@
 					methodType="GET"
 					headersParams="Authorization,Accept-Crs"
 				>
-					<Param name="url"  xpathExpression="concat('https://open-zaak.test.sudwestfryslan.opengem.nl/zaken/api/v1/zaakinformatieobjecten?zaak=', $zaakUrl)">
+					<Param name="url"  xpathExpression="concat('${openzaak.baseurl}zaken/api/v1/zaakinformatieobjecten?zaak=', $zaakUrl)">
 						<Param name="zaakUrl" sessionKey="zaakUrl"/>
 					</Param>
 					<Param name="Accept-Crs" value="EPSG:4326"/>
@@ -105,7 +105,7 @@
 				</HttpSender>
 			</SenderPipe>
 
-			<JsonPipe name="json_zaak_documents" addXmlRootElement="true"/>
+			<JsonPipe name="json_zaak_documents"/>
 
 			<XsltPipe name="document names" styleSheetName="documentNames.xsl" storeResultInSessionKey="documents">
 			</XsltPipe>
@@ -142,7 +142,7 @@
 				<HttpSender 
 					name="httpSender" 
 					methodType="GET"
-					url="http://openzaakbrug.test.sudwestfryslan.opengem.nl/jwt"
+					url="${jwt.endpoint}"
 				>
 				</HttpSender>
 			</SenderPipe>
@@ -152,7 +152,7 @@
 					name="httpSender" 
 					methodType="GET"
 					headersParams="Authorization,Accept-Crs"
-					url="https://open-zaak.test.sudwestfryslan.opengem.nl/zaken/api/v1/zaken"
+					url="${openzaak.baseurl}zaken/api/v1/zaken"
 				>
 					<Param name="Accept-Crs" value="EPSG:4326"/>
 					<Param name="Authorization" xpathExpression="concat('Bearer ', $token)" >
