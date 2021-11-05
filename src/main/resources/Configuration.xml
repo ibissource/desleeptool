@@ -107,10 +107,10 @@
 
 			<JsonPipe name="json_zaak_documents"/>
 
-			<XsltPipe name="document names" styleSheetName="documentNames.xsl" storeResultInSessionKey="documents">
+			<XsltPipe name="document names" styleSheetName="xsl/documentNames.xsl" storeResultInSessionKey="documents">
 			</XsltPipe>
 
-			<XsltPipe name="createResponse" styleSheetName="createZaakDetailsMessage.xsl" getInputFromFixedValue="&lt;dummy/&gt;">
+			<XsltPipe name="createResponse" styleSheetName="xsl/createZaakDetailsMessage.xsl" getInputFromFixedValue="&lt;dummy/&gt;">
 				<Param name="zaakId" sessionKey="identificatie"/>
 				<Param name="zaakTypeId" sessionKey="ZaakTypeIdentificatie"/>
 				<Param name="zaakTypeOmschrijving" sessionKey="ZaakTypeOmschrijving"/>
